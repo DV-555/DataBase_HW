@@ -1,0 +1,41 @@
+1. Вывести название и стоимость в USD одного самого дорогого проданного товара:
+
+SELECT Products.ProductName,
+       Products.Price * 1.07 AS USD_Price // Conversion EUR -> USD
+FROM Products
+    JOIN OrderDetails ON Products.ProductID = OrderDetails.ProductID
+ORDER BY Price DESC LIMIT 1
+
+
+2. Вывести два самых дорогих товара из категории Beverages из USA:
+
+SELECT *
+FROM Products P
+         JOIN Categories C ON P.CategoryID = C.CategoryID
+         JOIN Suppliers S ON P.SupplierID = S.SupplierID
+WHERE CategoryName = 'Beverages'
+  AND Country = 'USA'
+ORDER BY Price DESC LIMIT 2
+
+
+3.Удалить товары с ценой менее 5 EUR
+
+DELETE FROM Products
+WHERE Price < 5
+
+
+4.Вывести список стран, которые поставляют морепродукты
+
+SELECT Suppliers.Country
+FROM Products
+         JOIN Categories ON Categories.CategoryID = Products.CategoryID
+         JOIN Suppliers ON Suppliers.SupplierID = Products.SupplierID
+WHERE Categories.CategoryName = 'Seafood'
+
+
+5.Очистить поле ContactName у всех клиентов не из China
+
+UPDATE
+    Customers
+SET ContactName=' '
+WHERE NOT Country = 'China'  // После перезагрузки таблицы Customers поле ContactName не содержит записей
